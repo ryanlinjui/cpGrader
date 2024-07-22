@@ -1,0 +1,4 @@
+[global]
+command = "./fin03"
+correct = "./correct/fin03.c"
+support = ["./correct/fin03.c"]

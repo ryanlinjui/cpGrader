@@ -1,0 +1,8 @@
+Please enter f(x) degree: 2
+Please enter f(x) coefficients: 1 0 1
+Please enter g(x) degree: 2
+Please enter g(x) coefficients: 1 0 0
+f(x): x**2 + 1
+g(x): x**2
+(f(x)g(x))': 4*x**3 + 2*x
+(f(x)/g(x))': -2/x**3

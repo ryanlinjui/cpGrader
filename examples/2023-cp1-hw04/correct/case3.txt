@@ -1,0 +1,8 @@
+Please enter f(x) degree: 1
+Please enter f(x) coefficients: 1 0
+Please enter g(x) degree: 2
+Please enter g(x) coefficients: -1 -3523 323
+f(x): x
+g(x): -x**2 - 3523*x + 323
+(f(x)g(x))': -3*x**2 - 7046*x + 323
+(f(x)/g(x))': x*(2*x + 3523)/(-x**2 - 3523*x + 323)**2 + 1/(-x**2 - 3523*x + 323)

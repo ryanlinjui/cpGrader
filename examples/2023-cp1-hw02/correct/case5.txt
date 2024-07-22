@@ -1,0 +1,2 @@
+Initial Investment:		10000001
+Error: please enter a integer for Initial Investment between 1~10000000
