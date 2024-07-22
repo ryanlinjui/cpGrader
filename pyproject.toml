@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "cpgrader"
+version = "0.1.0"
+description = ""
+authors = ["ryanlinjui <ryanlinjui@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pexpect = "^4.9.0"
+toml = "^0.10.2"
+objprint = "^0.2.3"
+
+[tool.poetry.group.dev.dependencies]
+sympy = "^1.12"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

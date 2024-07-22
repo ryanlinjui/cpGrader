@@ -1,0 +1,33 @@
+# poetry
+.venv/
+poetry.lock
+
+# 
+docs/
+
+# moodle submission file by extract function
+files
+
+# log files
+*.log
+
+# mac
+.DS_Store
+
+# vscode settings
+.vscode
+
+# python cache
+__pycache__
+
+# for examples directory
+cp-hw/
+examples/**/files
+examples/**/report.csv
+examples/**/correct/*
+!examples/**/correct/*.txt
+!examples/**/correct/*.c
+!examples/**/correct/*.h
+!examples/**/correct/Makefile
+!examples/**/correct/*.py
+!examples/2023-cp1-hw05/correct/output.fm2
