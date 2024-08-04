@@ -6,7 +6,7 @@ grader = Grader(
 
 def main():
     grader.run(
-        moodle_submission_dir="/home/cp-hw/cp2-hw04",
+        moodle_submission_dir="./submissions",
         disable_build=True
     )
 

@@ -1,6 +1,4 @@
-from cpGrader import (
-    Grader
-)
+from cpGrader import Grader
 
 grader = Grader()
 
@@ -12,7 +10,7 @@ def verify(case_name: str, student_output: str, correct_output: str):
 
 def main():
     grader.run(
-        moodle_submission_dir="/home/cp-hw/cp1-hw03"
+        moodle_submission_dir="./submissions"
     )
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ def verify(case_name: str, student_output: str, correct_output: str):
 
 def main():
     grader.run(
-        moodle_submission_dir="/home/cp-hw/cp2-fin"
+        moodle_submission_dir="./submissions"
     )
 
 if __name__ == "__main__":

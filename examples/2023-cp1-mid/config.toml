@@ -1,7 +1,7 @@
 [global]
 command = "./mid04"
 correct = "./correct/mid04.c"
-support = ["./correct/mid04.c", "./dummy/mid04.c"]
+support = ["./correct/mid04.c"]
 
 [[case]]
 name = "case1"

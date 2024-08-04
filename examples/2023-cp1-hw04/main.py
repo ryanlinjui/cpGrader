@@ -3,9 +3,7 @@ import signal
 
 from sympy import sympify
 
-from cpGrader import (
-    Grader
-)
+from cpGrader import Grader
 
 class VerfiyTimeoutError(Exception):
     pass
@@ -58,7 +56,7 @@ def verify(case_name: str, student_output: str, correct_output: str):
 
 def main():
     grader.run(
-        moodle_submission_dir="../../cp-hw/cp1-hw04"
+        moodle_submission_dir="./submissions"
     )
 
 if __name__ == "__main__":
