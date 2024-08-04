@@ -1,6 +1,7 @@
 import os
 import shutil
 import logging
+from sys import executable
 from inspect import currentframe
 from typing import (
     List,
@@ -76,21 +77,16 @@ class Case:
             logging.debug(f"C correct program finished")
             
         elif correct_file.endswith(".py"): # Python correct program
-            PYTHON_INTERPRETER = ["python3", "python"]
-
             logging.debug(f"Python correct program running")
 
-            for interpreter in PYTHON_INTERPRETER:
-                if shutil.which(interpreter):
-                    command = f"{interpreter} {correct_file}"
-                    logging.debug(f"Excute: {correct_dir}, command: {command}")
-                    self.correct_output = execute(
-                        folder=correct_dir,
-                        command=command,
-                        stdin_list=self.case_data
-                    )
-                    break
-    
+            command = f"{executable} {correct_file}"
+            logging.debug(f"Excute: {correct_dir}, command: {command}")
+            self.correct_output = execute(
+                folder=correct_dir,
+                command=command,
+                stdin_list=self.case_data
+            )
+
             logging.debug(f"Python correct program finished")
         
         output_filepath = os.path.join(correct_dir, f"{self.name}.txt")
@@ -122,13 +118,13 @@ class Case:
         except ExecuteException.NoFile as e:
             logging.error(f"Failed - {str(e)}")
             output = e.output
-            comment = "no file"
+            comment = e.comment
             exception_signal = ExecuteException.NoFile
             
         except ExecuteException.ProgramError as e:
             logging.error(f"{self.name}: Failed - {str(e)}")
             output = e.output
-            comment = "program error"
+            comment = e.comment
             if self.name != DEFAULT_CASE_NAME:
                 comment = f"{self.name}: {comment}"
             exception_signal = ExecuteException.ProgramError

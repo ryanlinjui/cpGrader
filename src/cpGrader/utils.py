@@ -102,13 +102,19 @@ class ExecuteException(Exception):
         self.output = output
 
     class ProgramError(Exception):
+        COMMENT = "program error"
+        
         def __init__(self, message: str, output: str = ""):
             super().__init__(message)
+            self.comment = self.COMMENT
             self.output = output
 
     class NoFile(Exception):
+        COMMENT = "no file"
+
         def __init__(self, message: str, output: str = ""):
             super().__init__(message)
+            self.comment = self.COMMENT
             self.output = output
 
 def execute(folder:str, command:str, stdin_list:list=[]) -> str:
