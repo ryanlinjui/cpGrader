@@ -1,12 +1,10 @@
+# private files
+docs/
+cp-hw/
+
 # poetry
 .venv/
 poetry.lock
-
-# 
-docs/
-
-# moodle submission file by extract function
-files
 
 # log files
 *.log
@@ -20,14 +18,20 @@ files
 # python cache
 __pycache__
 
+# pytest cache
+.pytest_cache
+
 # for examples directory
-cp-hw/
 examples/**/files
-examples/**/report.csv
+examples/**/*.csv
 examples/**/correct/*
-!examples/**/correct/*.txt
 !examples/**/correct/*.c
 !examples/**/correct/*.h
 !examples/**/correct/Makefile
 !examples/**/correct/*.py
-!examples/2023-cp1-hw05/correct/output.fm2
+
+# 2024-cp2-hw03 example
+!examples/2024-cp2-hw03/correct/*.txt
+
+# 2024-cp2-fin example
+!examples/2024-cp2-fin/correct/*.txt
