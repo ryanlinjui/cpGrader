@@ -1,8 +1,0 @@
-Please enter f(x) degree: 0
-Please enter f(x) coefficients: 0
-Please enter g(x) degree: 0
-Please enter g(x) coefficients: 0
-f(x): 0
-g(x): 0
-(f(x)g(x))': 0
-(f(x)/g(x))': 0

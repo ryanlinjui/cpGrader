@@ -1,8 +1,0 @@
-Initial Investment:		50000
-Recurring Monthly Investment:	4000
-Start Month:			8
-Start Year:			2023
-End Month:			8
-End Year:			2023
-Annual Rate of Return (%):	12
-Error: Time range must larger than a month.

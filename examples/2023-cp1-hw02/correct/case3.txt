@@ -1,3 +1,0 @@
-Initial Investment:		50000
-Recurring Monthly Investment:	-4000
-Error: please enter enter a integer for Recurring Monthly Investment between 0~10000000
