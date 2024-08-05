@@ -2,13 +2,28 @@
 
 cpGrader is designed to be used with the course ["NTNU CSIE Computer Programming I/II"](https://sites.google.com/gapps.ntnu.edu.tw/neokent/teaching) by instructor [neokent (紀博文 Po-Wen Chi)](https://sites.google.com/gapps.ntnu.edu.tw/neokent/about-me).
 
+## Thanks for your Contribution
+
+<p>
+    <a href="https://github.com/NaoCoding">
+        <img src="https://img.shields.io/badge/41247001S-盧昱安-blue"/>
+    </a>
+    <img src="https://img.shields.io/badge/41247012S-吳振榮-blue"/>
+    <img src="https://img.shields.io/badge/41247024S-廖妤恩-blue"/>
+    <img src="https://img.shields.io/badge/41247032S-吳俊廷-blue"/>
+    <a href="https://github.com/mrfish233">
+        <img src="https://img.shields.io/badge/41247039S-韓欣劭-blue"/>
+    </a>
+    <img src="https://img.shields.io/badge/41247057S-陳育渝-blue"/>
+</p>
+
 ## Installation
 
 ```bash
 pip install cpGrader
 ```
 
-## How does it work?
+# How does it works?
 
 ![assets](https://github.com/ryanlinjui/cpGrader/assets/57468611/da57e04c-316b-46ce-a400-0cad8c00ff17)
 
@@ -25,9 +40,9 @@ pip install cpGrader
 4. Design the verify function.
 5. Run your grader.
 
-## Getting Started
+# Getting Started
 
-### TOML Config File
+## TOML Config File
 
 - `global`: the global settings (Field below is just for global).
     - `support [list]`: the files copied to the student's folder.
@@ -38,9 +53,9 @@ pip install cpGrader
     - `correct [string]`: the correct file which is program file (`.c`, `.py`) or plain text file (`.txt`, `.out`).
     - `command [string]`: the command to run student's program.
 
-### Basic Example
+## Basic Example
 
-#### Config File
+### Config File
 ```toml
 [global]
 support = ["input.bmp", "assignment.h"]
@@ -58,7 +73,7 @@ file = "./testcase/2.in"
 pts = 10
 ```
 
-#### Python Code
+### Python Code
 ```python
 from cpGrader import Grader
 
@@ -69,6 +84,20 @@ def verify(case_name: str, student_output: str, correct_output: str):
     assert student_output == correct_output
 
 grader.run(
-    moodle_submission_dir="./cp-hw"
+    moodle_submission_dir="/path/to/submissions_dir"
 )
+```
+
+> GO AND SEE MORE REAL [EXAMPLES HERE](./examples).
+
+# Pytest Testing
+
+### Run All Examples Test
+```bash
+pytest
+```
+
+### Choose the Test to Run (Wildcard)
+```bash
+pytest -k 2023_cp1_hw01
 ```
