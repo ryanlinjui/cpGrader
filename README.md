@@ -101,3 +101,8 @@ pytest
 ```bash
 pytest -k 2023_cp1_hw01
 ```
+
+### Details and Muti-Threading
+```bash
+pytest -vs -n auto
+```
