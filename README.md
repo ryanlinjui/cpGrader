@@ -99,7 +99,7 @@ pytest
 
 ### Choose the Test to Run (Wildcard)
 ```bash
-pytest -k 2023_cp1_hw01
+pytest -k 2023-cp1-hw01
 ```
 
 ### Details and Muti-Threading
