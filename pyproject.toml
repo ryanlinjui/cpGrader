@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "cpgrader"
 version = "0.1.0"
-description = ""
+description = "A Python Package to Grade Programming Assignments Automatically."
 authors = ["ryanlinjui <ryanlinjui@gmail.com>"]
 readme = "README.md"
 
@@ -14,6 +14,7 @@ objprint = "^0.2.3"
 [tool.poetry.group.dev.dependencies]
 sympy = "^1.12"
 pytest = "^8.3.2"
+pytest-xdist = "^3.6.1"
 
 [build-system]
 requires = ["poetry-core"]
