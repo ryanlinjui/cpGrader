@@ -1,12 +1,10 @@
-from cpGrader import (
-    Grader
-)
+from cpGrader import Grader
 
 grader = Grader()
 
 def main():
     grader.run(
-        moodle_submission_dir="/home/cp-hw/cp1-fin",
+        moodle_submission_dir="submissions",
         disable_verify=True
     )
 

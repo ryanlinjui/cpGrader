@@ -48,8 +48,7 @@ def verify2(case_name: str, student_output: str, correct_output: str):
 
 def main():
     grader.run(
-        moodle_submission_dir="./submissions",
-        specific_students=["41247001S"]
+        moodle_submission_dir="./submissions"
     )
 
 if __name__ == "__main__":

@@ -1,5 +1,3 @@
-import re
-
 from cpGrader import Grader
 
 grader = Grader()
