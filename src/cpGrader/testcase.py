@@ -5,7 +5,8 @@ from sys import executable
 from inspect import currentframe
 from typing import (
     List,
-    Callable
+    Callable,
+    Union
 )
 
 from .utils import (
@@ -22,18 +23,18 @@ class Case:
     def __init__(
         self,
         name: str,
-        case_file: str | None,
-        command: str | None,
-        pts: int | float,
-        correct_file: str | None,
-        verify_func: Callable | None
+        case_file: Union[str, None],
+        command: Union[str, None],
+        pts: Union[int, float],
+        correct_file: Union[str, None],
+        verify_func: Union[Callable, None]
     ):
         self.name: str = name
-        self.case_file: str | None = case_file
-        self.command: str | None = command
-        self.pts: int | float = pts
-        self.correct_file: str | None = correct_file
-        self.verify_func: Callable | None = verify_func
+        self.case_file: Union[str, None] = case_file
+        self.command: Union[str, None] = command
+        self.pts: Union[int, float] = pts
+        self.correct_file: Union[str, None] = correct_file
+        self.verify_func: Union[Callable, None] = verify_func
         
         self.case_data: List[str] = []
         self.student_output: str = ""
@@ -94,7 +95,7 @@ class Case:
         with open(output_filepath, "w+") as f:
             f.write(self.correct_output)
 
-    def execute(self, student_dir: str) -> ExecuteException | None:
+    def execute(self, student_dir: str) -> Union[None, ExecuteException]:
         # setup case data and build/execute correct file
         if self.case_file != None:
             self.case_data = [line.strip() for line in open(self.case_file, "r").readlines()]
