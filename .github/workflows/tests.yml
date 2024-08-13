@@ -1,4 +1,4 @@
-name: Examples Test
+name: Tests
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
       - '*.md'
 jobs:
   local-test:
-    name: Local-Ubuntu20.04-Python${{ matrix.python }}
+    name: ubuntu20.04-py${{ matrix.python }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
