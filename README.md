@@ -1,21 +1,26 @@
 # cpGrader: A Python Package to Grade Programming Assignments Automatically
 
-cpGrader is designed to be used with the course ["NTNU CSIE Computer Programming I/II"](https://sites.google.com/gapps.ntnu.edu.tw/neokent/teaching) by instructor [neokent (紀博文 Po-Wen Chi)](https://sites.google.com/gapps.ntnu.edu.tw/neokent/about-me).
+<div align="left">
 
-## Thanks for your Contribution
+[![Test](https://github.com/ryanlinjui/cpGrader/actions/workflows/tests.yml/badge.svg?branch=main&event=push)](https://github.com/ryanlinjui/cpGrader/actions?query=event%3Apush+branch%3Amain)
 
-<p>
-    <a href="https://github.com/NaoCoding">
-        <img src="https://img.shields.io/badge/41247001S-盧昱安-blue"/>
-    </a>
-    <img src="https://img.shields.io/badge/41247012S-吳振榮-blue"/>
-    <img src="https://img.shields.io/badge/41247024S-廖妤恩-blue"/>
-    <img src="https://img.shields.io/badge/41247032S-吳俊廷-blue"/>
-    <a href="https://github.com/mrfish233">
-        <img src="https://img.shields.io/badge/41247039S-韓欣劭-blue"/>
-    </a>
-    <img src="https://img.shields.io/badge/41247057S-陳育渝-blue"/>
-</p>
+</div>
+
+> cpGrader is designed to be used with the course ["NTNU CSIE Computer Programming I/II"](https://sites.google.com/gapps.ntnu.edu.tw/neokent/teaching) by instructor [neokent (紀博文 Po-Wen Chi)](https://sites.google.com/gapps.ntnu.edu.tw/neokent/about-me).
+
+## Thanks for your Contribution 🌟
+
+<div align="left">
+
+[![41247001S-盧昱安](https://img.shields.io/badge/41247001S-盧昱安-important)](https://github.com/NaoCoding)
+![41247012S-吳振榮](https://img.shields.io/badge/41247012S-吳振榮-important)
+![41247024S-廖妤恩](https://img.shields.io/badge/41247024S-廖妤恩-important)
+![41247032S-吳俊廷](https://img.shields.io/badge/41247032S-吳俊廷-important)
+[![41247039S-韓欣劭](https://img.shields.io/badge/41247039S-韓欣劭-important)](https://github.com/mrfish233)
+![41247057S-陳育渝](https://img.shields.io/badge/41247057S-陳育渝-important)
+
+</div>
+
 
 ## Installation
 
