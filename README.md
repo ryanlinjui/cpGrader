@@ -3,6 +3,8 @@
 <div align="left">
 
 [![Test](https://github.com/ryanlinjui/cpGrader/actions/workflows/tests.yml/badge.svg?branch=main&event=push)](https://github.com/ryanlinjui/cpGrader/actions?query=event%3Apush+branch%3Amain)
+[![PyPI](https://img.shields.io/pypi/v/cpGrader.svg)](https://pypi.org/project/cpGrader)
+[![python-version](https://img.shields.io/pypi/pyversions/cpGrader.svg)](https://pypi.org/project/cpGrader)
 
 </div>
 

@@ -6,6 +6,9 @@ cp-hw/
 .venv/
 poetry.lock
 
+# build files
+dist/
+
 # log files
 *.log
 
