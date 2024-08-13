@@ -7,7 +7,8 @@ import subprocess
 import zipfile
 from typing import (
     List,
-    Tuple
+    Tuple,
+    Union
 )
 
 import pexpect
@@ -166,7 +167,7 @@ def execute(folder:str, command:str, stdin_list:list=[]) -> str:
     return output
 
 def grade(
-    grade_report: List[Tuple[str, List[int | float], List[str]]],
+    grade_report: List[Tuple[str, List[Union[int, str]], List[str]]],
     save_path: str
 ) -> None:
 

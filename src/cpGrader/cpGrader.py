@@ -4,7 +4,8 @@ import logging
 import objprint
 from typing import (
     List,
-    Callable
+    Callable,
+    Union
 )
 
 import toml
@@ -29,7 +30,7 @@ from .config import (
 class Grader:
     def __init__(
         self,
-        config_file: str | None = DEFAULT_CONFIG_FILE
+        config_file: Union[str, None] = DEFAULT_CONFIG_FILE
     ):
         self.grade_report: List[List[str]] = []
         
@@ -84,7 +85,7 @@ class Grader:
 
     def setcase(
         self,
-        match_case: str | List[str] = ALL_MATCH_CASE
+        match_case: Union[str, List[str]] = ALL_MATCH_CASE
     ) -> Callable:
         
         def wrapper(func: Callable) -> None:
