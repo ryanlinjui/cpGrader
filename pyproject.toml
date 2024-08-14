@@ -1,6 +1,9 @@
+[project.urls]
+homepage = "https://github.com/ryanlinjui/cpGrader"
+
 [tool.poetry]
 name = "cpGrader"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Python Package to Grade Programming Assignments Automatically."
 authors = ["ryanlinjui <ryanlinjui@gmail.com>"]
 readme = "README.md"
