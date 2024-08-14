@@ -21,7 +21,6 @@ jobs:
         uses: JRubics/poetry-publish@v2.0
         with:
           pypi_token: ${{ secrets.PIPY_API_TOKEN }}
-          poetry_publish_options: "--skip-existing"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
