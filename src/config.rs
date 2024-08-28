@@ -7,6 +7,6 @@ pub const DEFAULT_EXTRACTED_FILES_DIR: &str = "files";
 pub const DEFAULT_CONFIG_FILE: &str = "config.toml";
 pub const DEFAULT_CASE_NAME: &str = "DefaultCase";
 
-pub const ALL_MATCH_CASE: u8 = 5 * 1024 * 1024 ;
+pub const MAX_OUTPUT_SIZE:usize  = 5 * 1024 * 1024 ;
 
 pub const ALL_MATCH_CASE: &str = "*";

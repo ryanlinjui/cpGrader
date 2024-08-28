@@ -1,10 +1,4 @@
-# cpGrader: A Python Package to Grade Programming Assignments Automatically
-
-<div align="left">
-
-[![Test](https://github.com/ryanlinjui/cpGrader/actions/workflows/tests.yml/badge.svg?branch=main&event=push)](https://github.com/ryanlinjui/cpGrader/actions?query=event%3Apush+branch%3Amain)
-[![PyPI](https://img.shields.io/pypi/v/cpGrader.svg)](https://pypi.org/project/cpGrader)
-[![python-version](https://img.shields.io/pypi/pyversions/cpGrader.svg)](https://pypi.org/project/cpGrader)
+# cpGrader_rs: A Rust Package to Grade Programming Assignments Automatically
 
 </div>
 
@@ -27,7 +21,7 @@
 ## Installation
 
 ```bash
-pip install cpGrader
+
 ```
 
 # How does it works?
@@ -80,19 +74,20 @@ file = "./testcase/2.in"
 pts = 10
 ```
 
-### Python Code
-```python
-from cpGrader import Grader
+### Rust Code
+```rust
+use cpGrader::Grader;
 
-grader = Grader()
+let grader = Grader::new();
 
-@grader.setcase()
-def verify(case_name: str, student_output: str, correct_output: str):
-    assert student_output == correct_output
+#[grader.setcase]
+fn verify(case_name: &str, student_output: &str, correct_output: &str) {
+    assert_eq!(student_output, correct_output);
+}
 
 grader.run(
     moodle_submission_dir="/path/to/submissions_dir"
-)
+);
 ```
 
 > GO AND SEE MORE REAL [EXAMPLES HERE](./examples).
@@ -100,16 +95,3 @@ grader.run(
 # Pytest Testing
 
 ### Run All Examples Test
-```bash
-pytest
-```
-
-### Choose the Test to Run (Wildcard)
-```bash
-pytest -k 2023-cp1-hw01
-```
-
-### Details and Muti-Threading
-```bash
-pytest -vs -n auto
-```
