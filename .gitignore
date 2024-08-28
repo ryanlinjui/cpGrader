@@ -38,3 +38,8 @@ examples/**/correct/*
 
 # 2024-cp2-fin example
 !examples/2024-cp2-fin/correct/*.txt
+
+
+# Added by cargo
+
+/target
