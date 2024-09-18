@@ -1,0 +1,13 @@
+target_directory = "examples/2023-cp1-hw01"
+assignment = "HW01"
+date = "2023-10-01"
+
+[scores]
+hw01 = 10
+hw02 = 10
+hw03 = 10
+hw04 = 10
+hw05 = 10
+mid = 30
+final_exam = 20
+bonus = 5
