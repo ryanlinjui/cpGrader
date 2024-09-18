@@ -3,8 +3,10 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::error::Error;
 use std::fs::{self, File};
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use std::fs::read_to_string;
+use zip::read::ZipArchive;
 
 #[derive(Debug, Deserialize)]
 struct Student {
@@ -59,7 +61,7 @@ fn process_subdirectories(base_path: &str, students: &HashMap<String, Student>) 
     println!("Submissions path: {:?}", submissions_path);
     let mut submissions = HashMap::new();
 
-    for (id, student) in students {
+    for (id ,_student) in students {
         let mut found = false;
 
         for entry in fs::read_dir(&submissions_path)? {
@@ -108,6 +110,50 @@ fn process_subdirectories(base_path: &str, students: &HashMap<String, Student>) 
     Ok(submissions)
 }
 
+fn extract_submissions(base_path: &str, submissions: &HashMap<String, String>) -> Result<(), Box<dyn Error>> {
+    let extraction_path = Path::new(base_path).join("extraction");
+
+    // 檢查並建立 extraction 目錄
+    if !extraction_path.exists() {
+        fs::create_dir(&extraction_path)?;
+    }
+
+    for (id, file_path) in submissions {
+        if file_path == "no submit" {
+            continue;
+        }
+
+        let student_extraction_path = extraction_path.join(id);
+
+        // 檢查並建立學生的 extraction 目錄
+        if !student_extraction_path.exists() {
+            fs::create_dir(&student_extraction_path)?;
+        }
+
+        let file = File::open(file_path)?;
+        let mut archive = ZipArchive::new(file)?;
+
+        for i in 0..archive.len() {
+            let mut file = archive.by_index(i)?;
+            let outpath = student_extraction_path.join(file.name());
+
+            if file.name().ends_with('/') {
+                fs::create_dir_all(&outpath)?;
+            } else {
+                if let Some(p) = outpath.parent() {
+                    if !p.exists() {
+                        fs::create_dir_all(&p)?;
+                    }
+                }
+                let mut outfile = File::create(&outpath)?;
+                std::io::copy(&mut file, &mut outfile)?;
+            }
+        }
+    }
+
+    Ok(())
+}
+
 fn read_config(file_path: &str) -> Result<Config, Box<dyn Error>> {
     let config_content = read_to_string(file_path)?;
     let config: Config = toml::from_str(&config_content)?;
@@ -145,8 +191,13 @@ fn main() {
     };
 
     // 打印每個學生的提交狀態
-    for (id, file) in submissions {
+    for (id, file) in &submissions {
         println!("學號: {}, 檔案: {}", id, file);
+    }
+
+    // 解壓縮每個有提交作業的學生的 ZIP 檔案
+    if let Err(err) = extract_submissions(&config.target_directory, &submissions) {
+        eprintln!("Error extracting submissions: {}", err);
     }
 
     // 打印作業和分數配置
