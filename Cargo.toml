@@ -1,11 +1,13 @@
 [package]
-name = "cpGrader_rs"
+name = "student_grader"
 version = "0.1.0"
 edition = "2021"
 
+
+authors = ["Your Name <your.email@example.com>"]
+description = "A command line tool to grade student assignments"
+license = "MIT"
+
 [dependencies]
-fs_extra = "1.3.0"
-csv = "1.1"
-serde = { version = "1.0", features = ["derive"] }
-toml = "0.5"
-zip = "0.5"
+regex = "1.11.1"  
+zip = "2.2.0"

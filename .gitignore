@@ -1,45 +1,20 @@
-# private files
-docs/
-cp-hw/
+# Ignore the target directory
+/target/
 
-# poetry
-.venv/
-poetry.lock
+# Ignore compiled files
+*.rs.bk
 
-# build files
-dist/
+# Ignore Cargo.lock (if you're using a library)
+Cargo.lock
 
-# log files
-*.log
+# Ignore the node_modules directory (if using Node.js)
+node_modules/
 
-# mac
+# Ignore IDE and editor files
+.idea/
+.vscode/
+*.swp
+
+# Ignore OS generated files
 .DS_Store
-
-# vscode settings
-.vscode
-
-# python cache
-__pycache__
-
-# pytest cache
-.pytest_cache
-
-# for examples directory
-examples/**/files
-examples/**/*.csv
-examples/**/correct/*
-!examples/**/correct/*.c
-!examples/**/correct/*.h
-!examples/**/correct/Makefile
-!examples/**/correct/*.py
-
-# 2024-cp2-hw03 example
-!examples/2024-cp2-hw03/correct/*.txt
-
-# 2024-cp2-fin example
-!examples/2024-cp2-fin/correct/*.txt
-
-
-# Added by cargo
-
-/target
+Thumbs.db

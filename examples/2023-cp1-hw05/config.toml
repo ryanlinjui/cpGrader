@@ -1,4 +1,0 @@
-[global]
-command = "./hw0505"
-correct = "./correct/hw0505.c"
-support = ["./correct/hw0505.c", "./correct/decode.c", "./correct/decode.h", "./correct/tas.h", "./dummy/hw0501.c", "./dummy/hw0502.c", "./dummy/hw0503.c", "./dummy/hw0504.c"]

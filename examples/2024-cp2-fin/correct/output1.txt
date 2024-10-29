@@ -1,3 +1,0 @@
-Current table size: 0
-Do you want to add a record? (y/n): n
-Do you want to query the database? (y/n): n

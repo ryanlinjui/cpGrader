@@ -1,4 +1,0 @@
-[global]
-command = "./fin03"
-correct = "./correct/fin03.c"
-support = ["./correct/fin03.c", "./dummy/fin01.c", "./dummy/fin02.c"]

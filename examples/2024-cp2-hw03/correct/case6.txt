@@ -1,2 +1,0 @@
-./hw0302: invalid option -- 'a'
-Unknown option: a

@@ -1,9 +1,0 @@
-y
-apple
-banana
-0900123456
-20
-n
-y
-SELECT phone WHERE FirstName="apple" and year="23"
-n

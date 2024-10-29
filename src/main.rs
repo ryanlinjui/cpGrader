@@ -1,209 +1,120 @@
-use csv::ReaderBuilder;
-use serde::Deserialize;
-use std::collections::HashMap;
-use std::error::Error;
-use std::fs::{self, File};
-use std::io::{Read, Write};
-use std::path::{Path, PathBuf};
-use std::fs::read_to_string;
+use std::fs;
+use std::fs::File;
+use std::io::{self, BufReader, Write};
+use std::path::Path;
+use regex::Regex;
 use zip::read::ZipArchive;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug)]
 struct Student {
-    index: String,
+    index: usize,
     id: String,
     name: String,
-    class: String,
-    total_grade: String,
-    final_total_grade: Option<String>,
-    hw01: String,
-    hw02: String,
-    hw03: String,
-    hw04: String,
-    hw05: String,
-    mid: String,
-    final_exam: String,
-    bonus: String,
+    zip_file: Option<String>,
+    folder_path: String,
 }
 
-#[derive(Debug, Deserialize)]
-struct Config {
-    target_directory: String,
-    assignment: String,
-    date: String,
-    scores: HashMap<String, u32>,
-}
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let target_dir = "./example"; // 替換成你的目標資料夾路徑
+    let students = extract_students(target_dir)?;
 
-fn read_csv(file_path: &str) -> Result<HashMap<String, Student>, Box<dyn Error>> {
-    let file = File::open(file_path)?;
-    let mut rdr = ReaderBuilder::new()
-        .has_headers(false) // 不啟用標題行的自動解析
-        .from_reader(file);
-
-    // 手動讀取並跳過標題行
-    let mut records = rdr.records();
-    if let Some(header) = records.next() {
-        header?; // 讀取並丟棄標題行
+    for student in &students {
+        println!("{:?}", student);
     }
 
-    let mut students = HashMap::new();
-    for result in records {
-        let record = result?;
-        let student: Student = record.deserialize(None)?;
-        students.insert(student.id.clone(), student);
-    }
+    println!("請選擇一個學生的索引：");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)?;
+    let index: usize = input.trim().parse()?;
 
-    Ok(students)
-}
-
-fn process_subdirectories(base_path: &str, students: &HashMap<String, Student>) -> Result<HashMap<String, String>, Box<dyn Error>> {
-    let submissions_path = Path::new(base_path).join("submissions");
-    println!("Submissions path: {:?}", submissions_path);
-    let mut submissions = HashMap::new();
-
-    for (id ,_student) in students {
-        let mut found = false;
-
-        for entry in fs::read_dir(&submissions_path)? {
-            let entry = entry?;
-            let path = entry.path();
-
-            if !path.is_dir() {
-                continue;
-            }
-
-            let dir_name = match path.file_name().and_then(|n| n.to_str()) {
-                Some(name) => name,
-                None => continue,
-            };
-
-            let parts: Vec<&str> = dir_name.split_whitespace().collect();
-            if parts.len() < 1 {
-                continue;
-            }
-
-            let student_id = parts[0];
-            if student_id != id {
-                continue;
-            }
-
-            for file_entry in fs::read_dir(&path)? {
-                let file_entry = file_entry?;
-                let file_path = file_entry.path();
-                if file_path.is_file() && file_path.extension().and_then(|ext| ext.to_str()) == Some("zip") {
-                    submissions.insert(id.clone(), file_path.to_string_lossy().to_string());
-                    found = true;
-                    break;
-                }
-            }
-
-            if found {
-                break;
-            }
+    if let Some(student) = students.iter().find(|&s| s.index == index) {
+        if let Some(zip_file) = &student.zip_file {
+            unzip_student_file(student, "./grader")?;
+        } else {
+            println!("學生 {} 沒有 zip 檔案。", student.id);
         }
-
-        if !found {
-            submissions.insert(id.clone(), "no submit".to_string());
-        }
-    }
-
-    Ok(submissions)
-}
-
-fn extract_submissions(base_path: &str, submissions: &HashMap<String, String>) -> Result<(), Box<dyn Error>> {
-    let extraction_path = Path::new(base_path).join("extraction");
-
-    // 檢查並建立 extraction 目錄
-    if !extraction_path.exists() {
-        fs::create_dir(&extraction_path)?;
-    }
-
-    for (id, file_path) in submissions {
-        if file_path == "no submit" {
-            continue;
-        }
-
-        let student_extraction_path = extraction_path.join(id);
-
-        // 檢查並建立學生的 extraction 目錄
-        if !student_extraction_path.exists() {
-            fs::create_dir(&student_extraction_path)?;
-        }
-
-        let file = File::open(file_path)?;
-        let mut archive = ZipArchive::new(file)?;
-
-        for i in 0..archive.len() {
-            let mut file = archive.by_index(i)?;
-            let outpath = student_extraction_path.join(file.name());
-
-            if file.name().ends_with('/') {
-                fs::create_dir_all(&outpath)?;
-            } else {
-                if let Some(p) = outpath.parent() {
-                    if !p.exists() {
-                        fs::create_dir_all(&p)?;
-                    }
-                }
-                let mut outfile = File::create(&outpath)?;
-                std::io::copy(&mut file, &mut outfile)?;
-            }
-        }
+    } else {
+        println!("無效的索引。");
     }
 
     Ok(())
 }
 
-fn read_config(file_path: &str) -> Result<Config, Box<dyn Error>> {
-    let config_content = read_to_string(file_path)?;
-    let config: Config = toml::from_str(&config_content)?;
-    Ok(config)
+fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>> {
+    let re = Regex::new(r"(\d{8}[A-Z])\s+(\S+)_\d+_assignsubmission_file_")?;
+    let mut students = Vec::new();
+    let entries = fs::read_dir(target_dir)?;
+
+    for (index, entry) in entries.enumerate() {
+        let entry = entry?;
+        let path = entry.path();
+        if !path.is_dir() {
+            continue;
+        }
+
+        let folder_name = match path.file_name().and_then(|n| n.to_str()) {
+            Some(name) => name,
+            None => continue,
+        };
+
+        let caps = match re.captures(folder_name) {
+            Some(caps) => caps,
+            None => continue,
+        };
+
+        let mut zip_file = None;
+        let student_entries = fs::read_dir(&path)?;
+        for student_entry in student_entries {
+            let student_entry = student_entry?;
+            let student_path = student_entry.path();
+            if student_path.extension().and_then(|ext| ext.to_str()) == Some("zip") {
+                if let Some(file_name) = student_path.file_name().and_then(|n| n.to_str()) {
+                    zip_file = Some(file_name.to_string());
+                    break;
+                }
+            }
+        }
+
+        let student = Student {
+            index,
+            id: caps[1].to_string(),
+            name: caps[2].to_string(),
+            zip_file,
+            folder_path: path.to_str().unwrap().to_string(),
+        };
+        students.push(student);
+    }
+
+    Ok(students)
 }
 
-fn main() {
-    let config = match read_config("config.toml") {
-        Ok(config) => config,
-        Err(err) => {
-            eprintln!("Error reading config file: {}", err);
-            return;
+fn unzip_student_file(student: &Student, output_dir: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let zip_file_path = format!("{}/{}", student.folder_path, student.zip_file.as_ref().unwrap());
+    let file = File::open(&zip_file_path)?;
+    let mut archive = ZipArchive::new(BufReader::new(file))?;
+
+    let student_output_dir = format!("{}/{}", output_dir, student.id);
+    fs::create_dir_all(&student_output_dir)?;
+
+    for i in 0..archive.len() {
+        let mut file = archive.by_index(i)?;
+        let outpath = match file.enclosed_name() {
+            Some(path) => student_output_dir.clone() + "/" + path.to_str().unwrap(),
+            None => continue,
+        };
+
+        if file.name().ends_with('/') {
+            fs::create_dir_all(&outpath)?;
+        } else {
+            if let Some(p) = Path::new(&outpath).parent() {
+                if !p.exists() {
+                    fs::create_dir_all(&p)?;
+                }
+            }
+            let mut outfile = File::create(&outpath)?;
+            io::copy(&mut file, &mut outfile)?;
         }
-    };
-
-    let students = match read_csv("grade.csv") {
-        Ok(students) => students,
-        Err(err) => {
-            eprintln!("Error reading CSV file: {}", err);
-            return;
-        }
-    };
-
-    // 打印讀取到的學生資料
-    for (id, student) in &students {
-        println!("學號: {}, 姓名: {}", id, student.name);
     }
 
-    let submissions = match process_subdirectories(&config.target_directory, &students) {
-        Ok(submissions) => submissions,
-        Err(err) => {
-            eprintln!("Error processing subdirectories: {}", err);
-            return;
-        }
-    };
-
-    // 打印每個學生的提交狀態
-    for (id, file) in &submissions {
-        println!("學號: {}, 檔案: {}", id, file);
-    }
-
-    // 解壓縮每個有提交作業的學生的 ZIP 檔案
-    if let Err(err) = extract_submissions(&config.target_directory, &submissions) {
-        eprintln!("Error extracting submissions: {}", err);
-    }
-
-    // 打印作業和分數配置
-    println!("本次作業: {}", config.assignment);
-    println!("日期: {}", config.date);
-    for (task, score) in &config.scores {
-        println!("題目: {}, 分數: {}", task, score);
-    }
+    Ok(())
 }
