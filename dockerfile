@@ -1,15 +1,23 @@
 FROM ubuntu:24.04
 
-RUN apt-get update && \
-    apt-get install -y \
-    build-essential \      
-    make \                
-    unzip \                
-    tar \  
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    zip \
+    unzip \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 建立一個工作目錄，並設定該目錄為工作路徑
-WORKDIR /workspace
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-# 預設的命令，可根據需求修改
-CMD ["/bin/bash"]
+# 設置工作目錄
+WORKDIR /usr/src/myapp
+
+# 複製當前目錄的內容到容器中
+COPY . .
+
+# 編譯 Rust 程式碼
+RUN cargo build --release
+
+# 執行 Rust 程式碼
+CMD ["./target/release/myapp"] 
