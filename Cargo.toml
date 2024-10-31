@@ -9,5 +9,6 @@ description = "A command line tool to grade student assignments"
 license = "MIT"
 
 [dependencies]
+clap = { version = "4.5.20", features = ["cargo"] }
 regex = "1.11.1"  
 zip = "2.2.0"
