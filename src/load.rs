@@ -48,6 +48,7 @@ pub fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::e
             folder_path: path.to_str().unwrap().to_string(),
             errors: Vec::new(),
             grades: HashMap::new(),
+            is_graded: false,
         };
         students.push(student);
     }
