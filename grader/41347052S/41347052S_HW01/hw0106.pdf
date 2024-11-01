@@ -1,7 +1,0 @@
-Makefile for multiple files
-
-if a.c has an error and b.c is not built.
--gcc command instructs 'make' to ignore error during the compilation of a.c.
-if an error while building 'a'.
-command compiles b.c is normally. if a.c fail, b.c will still be compiled
-therefore the build process is more robust and dose not completely stop due to a single failure.
