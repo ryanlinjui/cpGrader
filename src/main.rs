@@ -3,59 +3,72 @@ use clap::{arg, command, value_parser, Arg, ArgAction, ArgGroup, Command};
 
 
 fn main(){
-    let =command!()
-    .arg(
-        Arg::new () 
+    let match_result = command!()
+    .subcommand(
+        Command::new("score")
+            .about("Input students score for one problem")
+            .arg(
+                Arg::new("problem")
+                    .short('p')
+                    .long("problem")
+                    .required(true)
+                    .help("This argument define which problem to score")
+                    //.conflicts_with("lastname")
+            )
+            .arg(
+                Arg::new("score")
+
+                    .short('s')
+                    .long("score")
+                    //.aliases(["lname", "lastname"])
+                    .required(true)
+                    .help("The score of homework")
+            )
     )
+    .subcommand(
+        Command::new("build")
+        .about("Clean, unzip, make, copy depends to grader dir")
+            .arg(
+                Arg::new("index")
+                    .short('i')
+                    .long("index")
+                    //.required("true")
+                    .help("This argument define which person to build")
+                    .conflicts_with("id")
+            )
+            .arg(
+                Arg::new("id")
 
-
+                    //.short('id')
+                    .long("id")
+                    .aliases(["id", "ID"])
+                    //.required(true)
+                    .help("Or you can use student id")
+            )
+    )
+    .arg(
+        Arg::new("clean")
+            .short('c')
+            .long("clean")
+            //.required(true)
+            .help("Clean the grader dir")
+            .conflicts_with_all(["log","exit"])
+    )
+    .arg(
+        Arg::new("log")
+            .short('l')
+            .long("log")
+            //.required(true)
+            .help("print the log")
+            .conflicts_with_all(["clean","exit"])
+    )
+    .arg(
+        Arg::new("exit")
+            .short('e')
+            .long("exit")
+            //.required(true)
+            .help("exit the program and create csv of grade")
+            //.conflicts_with_all("")
+    )
+    .get_matches();
 }
-
-
-// fn main() {
-//     let match_result = command!()
-//     .subcommand(
-//         Command::new("register-person")
-//             .arg(
-//                 Arg::new("firstname")
-//                     //.group("person-register")
-//                     .short('f')
-//                     .long("first-name")
-//                     .aliases(["fname", "firstname"])
-//                     .required(true)
-//                     .help("This argument takes the persons first name")
-//                     //.conflicts_with("lastname")
-//             )
-//             .arg(
-//                 Arg::new("lastname")
-//                     //.group("person-register")
-//                     .short('l')
-//                     .long("last-name")
-//                     .aliases(["lname", "lastname"])
-//                     .required(true)
-//                     .help("This argument takes the persons last name")
-//             )
-//     )
-//     .subcommand(
-//         Command::new("register-pet")
-//             .arg(
-//                 Arg::new("pet-name")
-//                     .long("pet-name")
-//                     .short('p')
-//                     .required(true)
-//             )   
-//     )
-//     .about("This app register people names") 
-//     .arg(
-//         Arg::new("fluffy")
-//         .long("fluffy")
-//         .help("Is the person wearing a fluffy coat or not")
-//     )
-//     .get_matches();
-
-
-//     //println!("pet name: {}", match_result.get_one::<String>("pet-name").unwrap_or(&"no pet name".to_string()))
-//     let pet_args = match_result.subcommand_matches("register-pet");
-//     println!("Does pet name exist? {}", pet_args.unwrap().contains_id("pet-name"));
-
-// }
