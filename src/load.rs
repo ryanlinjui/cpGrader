@@ -1,6 +1,8 @@
 // load.rs
 use std::fs;
-use std::path::Path;
+//use std::path::Path;
+use regex::Regex;
+use std::collections::HashMap;
 use crate::Student;
 
 pub fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>> {

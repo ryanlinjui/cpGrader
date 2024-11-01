@@ -1,6 +1,8 @@
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::{self, BufReader};
+use std::path::Path;
 use zip::read::ZipArchive;
+use std::process::Command;
 use crate::Student;
 
 pub fn unzip_student_file(student: &Student, output_dir: &str) -> Result<(), Box<dyn std::error::Error>> {
@@ -40,11 +42,11 @@ pub fn run_make(student: &Student, homework_name: &str) -> Result<(), Box<dyn st
         .current_dir(&student_output_dir)
         .output()?;
 
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let stderr = String::from_utf8_lossy(&output.stderr);
+    // let stdout = String::from_utf8_lossy(&output.stdout);
+    // let stderr = String::from_utf8_lossy(&output.stderr);
 
-    let compile_log = format!("stdout:\n{}\nstderr:\n{}", stdout, stderr);
-    log_compile(student, &compile_log)?;
+    //let compile_log = format!("stdout:\n{}\nstderr:\n{}", stdout, stderr);
+    //log_compile(student, &compile_log)?;
 
     if output.status.success() {
         println!("學生 {} 的 make 成功。", student.id);

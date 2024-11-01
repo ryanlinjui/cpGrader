@@ -1,4 +1,5 @@
 use crate::Student;
+use std::fs;
 
 pub fn cleanup_student_folder(student: &Student, homework_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     let student_output_dir = format!("./grader/{}/{}_{}", student.id, student.id, homework_name);
