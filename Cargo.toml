@@ -1,5 +1,5 @@
 [package]
-name = "student_grader"
+name = "cpgrader-rs"
 version = "0.1.0"
 edition = "2021"
 

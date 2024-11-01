@@ -5,6 +5,10 @@ use clap::{arg, command, value_parser, Arg, ArgAction, ArgGroup, Command};
 fn main(){
     let match_result = command!()
     .subcommand(
+        Command::new("grade")
+            .about("Automatically grade students by dependcies")
+    )
+    .subcommand(
         Command::new("score")
             .about("Input students score for one problem")
             .arg(
@@ -53,6 +57,7 @@ fn main(){
             //.required(true)
             .help("Clean the grader dir")
             .conflicts_with_all(["log","exit"])
+            .action(ArgAction::SetTrue)
     )
     .arg(
         Arg::new("log")
@@ -61,6 +66,7 @@ fn main(){
             //.required(true)
             .help("print the log")
             .conflicts_with_all(["clean","exit"])
+            .action(ArgAction::SetTrue)
     )
     .arg(
         Arg::new("exit")
@@ -68,11 +74,13 @@ fn main(){
             .long("exit")
             //.required(true)
             .help("exit the program and create csv of grade")
+            .action(ArgAction::SetTrue)
             //.conflicts_with_all("")
     )
     .get_matches();
-
-    if let Some(matches) = match_result.subcommand_matches("score") {
+    if let Some(matches) = match_result.subcommand_matches("grade") {
+        println!("Grading students");
+    }else if let Some(matches) = match_result.subcommand_matches("score") {
         let problem: &String = matches.get_one("problem").unwrap();
         let score: &String = matches.get_one("score").unwrap();
         println!("Scoring problem {} with score {}", problem, score);
