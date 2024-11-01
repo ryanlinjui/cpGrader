@@ -71,4 +71,22 @@ fn main(){
             //.conflicts_with_all("")
     )
     .get_matches();
+
+    if let Some(matches) = match_result.subcommand_matches("score") {
+        let problem: &String = matches.get_one("problem").unwrap();
+        let score: &String = matches.get_one("score").unwrap();
+        println!("Scoring problem {} with score {}", problem, score);
+    } else if let Some(matches) = match_result.subcommand_matches("build") {
+        if let Some(index) = matches.get_one::<String>("index") {
+            println!("Building for index {}", index);
+        } else if let Some(id) = matches.get_one::<String>("id") {
+            println!("Building for ID {}", id);
+        }
+    } else if match_result.contains_id("clean") {
+        println!("Cleaning the grader dir");
+    } else if match_result.contains_id("log") {
+        println!("Printing the log");
+    } else if match_result.contains_id("exit") {
+        println!("Exiting the program and creating CSV of grade");
+    }
 }
