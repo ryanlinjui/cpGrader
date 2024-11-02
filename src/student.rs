@@ -1,7 +1,7 @@
 // student.rs
 use std::collections::HashMap;
-
-#[derive(Debug)]
+use serde::{Serialize, Deserialize};
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Student {
     pub index: usize,
     pub id: String,

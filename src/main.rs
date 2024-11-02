@@ -12,11 +12,12 @@ use grader::{grader, prompt_for_grade};
 use clean::cleanup_student_folder;
 //use log::log_compile;
 use student::Student;
+use load::load;
 use clap::{arg, command, value_parser, Arg, ArgAction, ArgGroup, Command};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let target_dir = "./example"; // 替換成你的目標資料夾路徑
-    let mut students = extract_students(target_dir)?;
+    let mut students = load(target_dir)?;
 
     println!("請輸入該次作業名稱：");
     let mut homework_name = String::new();
@@ -54,7 +55,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 //             )
 //             .arg(
 //                 Arg::new("score")
-
 //                     .short('s')
 //                     .long("score")
 //                     //.aliases(["lname", "lastname"])
