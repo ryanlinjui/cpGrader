@@ -27,6 +27,13 @@ pub fn load(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>
 
     Ok(students)
 }
+pub fn store(students: &Vec<Student>) -> Result<(), Box<dyn std::error::Error>> {
+    let status_file = format!("./status/status.json");
+    let serialized_students = serde_json::to_string(students).map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
+    let mut file = File::create(status_file).map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
+    file.write_all(serialized_students.as_bytes()).map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
+    Ok(())
+}
 
 
 

@@ -4,14 +4,24 @@ use crate::unzip_student_file; // Adjust the path if necessary
 use crate::run_make; // Adjust the path if necessary
 //use crate::log_errors; // Adjust the path if necessary
 use std::io;
+use crate::cleanup_student_folder; // Add this line to import the function
 
 
+// pub fn grade_student(student: &mut Student, homework_name: &str) -> Result<(), Box<dyn std::error::Error>> {
+//     grader(student, &homework_name)?;
+//     prompt_for_grade(student, &homework_name)?;
+//     cleanup_student_folder()?;
+//     Ok(())
+// }
 
+// pub fn load_first_ungraded_student(students: &mut Vec<Student>) -> Option<&mut Student> {
+//     students.iter_mut().find(|student| !student.is_graded)
+// }
 
 pub fn grader(student: &mut Student, homework_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     if student.is_graded {
         println!("學生 {} 已經被評分過。", student.id);
-        return Ok(());
+        //return Ok(());
     }
     println!("處理學生：{} - {}", student.index, student.name);
     if let Some(zip_file) = &student.zip_file {
@@ -37,5 +47,10 @@ pub fn prompt_for_grade(student: &mut Student, homework_name: &str) -> Result<()
     let grade = grade.trim().to_string();
     student.grades.insert(homework_name.to_string(), grade.clone());
     println!("學生 {} 的 {} 成績為：{}", student.id, homework_name, grade);
+    Ok(())
+}
+pub fn score_student(student: &mut Student, problem: &str, score: &str) -> Result<(), Box<dyn std::error::Error>> {
+    student.grades.insert(problem.to_string(), score.to_string());
+    student.is_graded = true;
     Ok(())
 }

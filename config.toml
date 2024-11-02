@@ -1,14 +1,3 @@
 [global]
-support = ["input.bmp", "assignment.h"]
-correct = "./correct.c"
-command = "./assignment"
+homework = "HW01"
 
-[[case]]
-name = "case1"
-file = "./testcase/1.in"
-pts = 5
-
-[[case]]
-name = "case2"
-file = "./testcase/2.in"
-pts = 10
