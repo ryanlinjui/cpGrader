@@ -5,18 +5,66 @@ use crate::run_make; // Adjust the path if necessary
 //use crate::log_errors; // Adjust the path if necessary
 use std::io;
 use crate::cleanup_student_folder; // Add this line to import the function
+use std::process::Command;
+use std::io::Write;
+use std::fs;
 
 
-// pub fn grade_student(student: &mut Student, homework_name: &str) -> Result<(), Box<dyn std::error::Error>> {
-//     grader(student, &homework_name)?;
-//     prompt_for_grade(student, &homework_name)?;
-//     cleanup_student_folder()?;
-//     Ok(())
-// }
+pub fn grade_student(student: &mut Student, homework_name: &str, testcase_name: &str)-> Result<(), Box<dyn std::error::Error>> {
+    // Iterate over all test cases
 
-// pub fn load_first_ungraded_student(students: &mut Vec<Student>) -> Option<&mut Student> {
-//     students.iter_mut().find(|student| !student.is_graded)
-// }
+    let config_content = fs::read_to_string("config.toml")?;
+    let config: toml::Value = toml::from_str(&config_content)?;
+    let testcase_num: i32 = config[testcase_name]["testcase"].as_str().unwrap().parse().unwrap();
+    
+    let mut total_score = 0;
+    for i in 1..=testcase_num { // Assuming there are 10 test cases
+        println!("running testcase: {}", i);
+
+        // // Construct the command to run the student's homework
+        // let student_id = &student.id;
+        // let hw_path = format!("./grader/{}/{}_HW01/hw010{}", student_id, student_id, i);
+        // let input_path = format!("./testcase/testcase05/in/{}.in", i);
+        // let output_path = format!("./testcase/testcase05/out/{}.out", i);
+
+        // // Run the student's homework with the input file
+        // let output = Command::new(hw_path)
+        //     .arg("<")
+        //     .arg(&input_path)
+        //     .output()
+        //     .expect("Failed to execute process");
+
+        // // Print the output
+        // println!("{}", String::from_utf8_lossy(&output.stdout));
+
+        // // Prompt for the score
+        // println!("請輸入分數：");
+        // let mut score = String::new();
+        // io::stdin().read_line(&mut score)?;
+        // let score: i32 = score.trim().parse().expect("Invalid score input");
+
+        // // Add the score to the total score
+        // total_score += score;
+        //     Ok(())
+        // }
+    
+        // // Print the total score
+        // println!("總分：{}", total_score);
+    
+        // // Update the student's score
+        // student.grades.insert(homework_name.to_string(), total_score.to_string());
+        // student.is_graded = true;
+    
+    }
+
+    // Print the total score
+    println!("total_score：{}", total_score);
+
+    // Update the student's score
+    student.grades.insert(homework_name.to_string(), total_score.to_string());
+    student.is_graded = true;
+    Ok(())
+}
 
 pub fn grader(student: &mut Student, homework_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     if student.is_graded {

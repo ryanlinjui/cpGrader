@@ -1,5 +1,6 @@
 // load.rs
 use std::fs;
+//use std::intrinsics::simd::simd_or;
 use std::path::Path;
 use regex::Regex;
 use std::collections::HashMap;
@@ -7,6 +8,7 @@ use crate::Student;
 use serde_json::Value;
 use std::fs::File;
 use std::io::Write;
+//use csv::Writer;
 
 pub fn load(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>> {
     let status_file = format!("./status/status.json");
@@ -20,6 +22,9 @@ pub fn load(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>
 
     // 序列化學生資料
     let serialized_students = serde_json::to_string(&students).map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
+    
+
+    //sort students by id
 
     // 將序列化的資料寫入 status 檔案
     let mut file = File::create(status_file).map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
@@ -35,13 +40,11 @@ pub fn store(students: &Vec<Student>) -> Result<(), Box<dyn std::error::Error>> 
     Ok(())
 }
 
-
-
 pub fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::error::Error>> {
-    let re = Regex::new(r"(\d{8}[A-Z])\s+(\S+)_\d+_assignsubmission_file_")?;
+    let re = Regex::new(r"(\d{8}[a-zA-Z])\s+(\S+)_\d+_assignsubmission_file_")?;
     let mut students = Vec::new();
     let entries = fs::read_dir(target_dir)?;
-
+    
     for (index, entry) in entries.enumerate() {
         let entry = entry?;
         let path = entry.path();
@@ -74,7 +77,7 @@ pub fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::e
 
         let student = Student {
             index,
-            id: caps[1].to_string(),
+            id: caps[1].to_uppercase(),
             name: caps[2].to_string(),
             zip_file,
             folder_path: path.to_str().unwrap().to_string(),
@@ -84,6 +87,37 @@ pub fn extract_students(target_dir: &str) -> Result<Vec<Student>, Box<dyn std::e
         };
         students.push(student);
     }
+    // Sort students by id
+    students.sort_by(|a, b| a.id.cmp(&b.id));
+
+    // Change index by id
+    for (new_index, student) in students.iter_mut().enumerate() {
+        student.index = new_index;
+    }
 
     Ok(students)
+}
+
+pub fn to_csv(students: &Vec<Student>, output_file: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let mut wtr = csv::Writer::from_path(output_file)?;
+
+    // Write the header
+    wtr.write_record(&["Index", "ID", "Name", "Zip File", "Folder Path", "Errors", "Grades", "Is Graded"])?;
+
+    // Write student data
+    for student in students {
+        wtr.write_record(&[
+            student.index.to_string(),
+            student.id.clone(),
+            student.name.clone(),
+            student.zip_file.clone().unwrap_or_default(),
+            student.folder_path.clone(),
+            format!("{:?}", student.errors),
+            format!("{:?}", student.grades),
+            student.is_graded.to_string(),
+        ])?;
+    }
+
+    wtr.flush()?;
+    Ok(())
 }

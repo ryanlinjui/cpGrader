@@ -9,7 +9,12 @@
 
 ## Todo
 
-- csv
+- output csv
+
+## bug
+
+- index error
+--
 
 ### Commands
 
