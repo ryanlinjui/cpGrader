@@ -20,4 +20,4 @@ node_modules/
 Thumbs.db
 
 # Ignore the build directory
-example/
+/example/

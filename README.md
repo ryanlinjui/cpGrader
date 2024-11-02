@@ -1,27 +1,50 @@
-# cpGrader_rs: A Rust Package to Grade Programming Assignments Automatically
 
-</div>
+## Finish
 
-> cpGrader_rs is designed to be used with the course ["NTNU CSIE Computer Programming I/II"](https://sites.google.com/gapps.ntnu.edu.tw/neokent/teaching) by instructor [neokent (紀博文 Po-Wen Chi)](https://sites.google.com/gapps.ntnu.edu.tw/neokent/about-me).
-> forked from [ryanlinjui/cpGrader](https://github.com/ryanlinjui/cpGrader)
+- Unzip
+- Make
+- Log
+- Clean module
+- load
 
-## Thanks for your Contribution
+## Todo
 
-<div align="left">
+- csv
 
-[![41247001S-盧昱安](https://img.shields.io/badge/41247001S-盧昱安-important)](https://github.com/NaoCoding)
-![41247012S-吳振榮](https://img.shields.io/badge/41247012S-吳振榮-important)
-![41247024S-廖妤恩](https://img.shields.io/badge/41247024S-廖妤恩-important)
-![41247032S-吳俊廷](https://img.shields.io/badge/41247032S-吳俊廷-important)
-[![41247039S-韓欣劭](https://img.shields.io/badge/41247039S-韓欣劭-important)](https://github.com/mrfish233)
-![41247057S-陳育渝](https://img.shields.io/badge/41247057S-陳育渝-important)
+### Commands
 
-</div>
+- `--score <hw0303> <int>`: 打分
+- `--clean`: Clean
+- `--build`: Clean, unzip, make, log, copy solution
+- `--log`: Log
+- `--exit`
 
+### Toml
 
-## Installation
+- HW0幾
+- 改第幾提
 
-```bash
-cargo build --release 
-cargo run
-```
+### Grading
+
+- `--grade`: 自動批改
+    1. 純輸出 run+diff
+    2. 有測資 固定IO
+        - 有多少筆
+        - `testcase0X` 裏面有 `in/` 跟 `out/`
+            - `in` ...
+            - `out` ...
+    3. 沒有固定IO (other)
+    4. 互動題
+    5. 帶參數 (可選參數)
+
+### Diff
+
+- 要如何輸出是個問題
+- 該題總分加總起來為20
+
+### Output
+
+- `--output`: Output a CSV
+- Log to zip
+- If ok, score
+- If error, error message
