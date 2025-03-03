@@ -6,7 +6,8 @@ from inspect import currentframe
 from typing import (
     List,
     Callable,
-    Union
+    Union,
+    Optional
 )
 
 from .utils import (
@@ -23,25 +24,24 @@ class Case:
     def __init__(
         self,
         name: str,
-        case_file: Union[str, None],
-        command: Union[str, None],
+        case_file: Optional[str],
+        command: Optional[str],
         pts: Union[int, float],
-        correct_file: Union[str, None],
-        verify_func: Union[Callable, None]
+        correct_file: Optional[str],
+        verify_func: Optional[Callable]
     ):
         self.name: str = name
-        self.case_file: Union[str, None] = case_file
-        self.command: Union[str, None] = command
+        self.case_file: Optional[str] = case_file
+        self.command: Optional[str] = command
         self.pts: Union[int, float] = pts
-        self.correct_file: Union[str, None] = correct_file
-        self.verify_func: Union[Callable, None] = verify_func
+        self.correct_file: Optional[str] = correct_file
+        self.verify_func: Optional[Callable] = verify_func
         
         self.case_data: List[str] = []
         self.student_output: str = ""
         self.correct_output: str = ""
 
     def __correct_setup(self) -> None:
-
         # No correct file
         if self.correct_file == None:
             logging.debug(f"No correct file")
@@ -61,12 +61,8 @@ class Case:
 
         if correct_file.endswith(".c"):  # C correct program
             logging.debug(f"C correct program runnning")
-            
             logging.debug(f"Buidling: {correct_dir}, support_files: {support_files}")
-            build(
-                folder=correct_dir,
-                copy_file=support_files
-            )
+            build(folder=correct_dir, copy_file=support_files)
 
             command = f"./{correct_file}".replace(".c", "")
             logging.debug(f"Execute: {correct_dir}, command: {command}")
@@ -79,7 +75,6 @@ class Case:
             
         elif correct_file.endswith(".py"): # Python correct program
             logging.debug(f"Python correct program running")
-
             command = f"{executable} {correct_file}"
             logging.debug(f"Excute: {correct_dir}, command: {command}")
             self.correct_output = execute(
@@ -87,7 +82,6 @@ class Case:
                 command=command,
                 stdin_list=self.case_data
             )
-
             logging.debug(f"Python correct program finished")
         
         output_filepath = os.path.join(correct_dir, f"{self.name}.txt")
@@ -95,7 +89,7 @@ class Case:
         with open(output_filepath, "w+") as f:
             f.write(self.correct_output)
 
-    def execute(self, student_dir: str) -> Union[None, ExecuteException]:
+    def execute(self, student_dir: str) -> Optional[ExecuteException]:
         # setup case data and build/execute correct file
         if self.case_file != None:
             self.case_data = [line.strip() for line in open(self.case_file, "r").readlines()]
@@ -130,23 +124,25 @@ class Case:
                 comment = f"{self.name}: {comment}"
             exception_signal = ExecuteException.ProgramError
         
-        finally:
-            if len(output) > MAX_OUTPUT_SIZE:
-                logging.warning(f"In {student_dir}, {self.name}: outputs are truncated to {MAX_OUTPUT_SIZE} characters")
-                output = output[:MAX_OUTPUT_SIZE]
+        except Exception as e:
+            logging.error(f"Exception: {str(e)}")
 
-            output_filepath = os.path.join(student_dir, f"{self.name}.txt")
-            logging.debug(f"Write student output: {output_filepath}")
-            with open(output_filepath, "w+") as f:
-                f.write(output)
-            self.student_output = output
-    
-            # Append to grade report
-            logging.debug(f"Exception Signal: {exception_signal}")
-            if exception_signal:
-                (lambda x: (x[1].append(0), x[2].append(comment), x))(currentframe().f_back.f_locals["self"].grade_report[-1])
-            
-            return exception_signal
+        if len(output) > MAX_OUTPUT_SIZE:
+            logging.warning(f"In {student_dir}, {self.name}: outputs are truncated to {MAX_OUTPUT_SIZE} characters")
+            output = output[:MAX_OUTPUT_SIZE]
+
+        output_filepath = os.path.join(student_dir, f"{self.name}.txt")
+        logging.debug(f"Write student output: {output_filepath}")
+        with open(output_filepath, "w+") as f:
+            f.write(output)
+        self.student_output = output
+
+        # Append to grade report
+        logging.debug(f"Exception Signal: {exception_signal}")
+        if exception_signal:
+            (lambda x: (x[1].append(0), x[2].append(comment), x))(currentframe().f_back.f_locals["self"].grade_report[-1])
+        
+        return exception_signal
 
     def verify(self) -> None:
         if self.verify_func == None:

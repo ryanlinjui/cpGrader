@@ -5,7 +5,8 @@ import objprint
 from typing import (
     List,
     Callable,
-    Union
+    Union,
+    Optional
 )
 
 import toml
@@ -28,10 +29,7 @@ from .config import (
 )
 
 class Grader:
-    def __init__(
-        self,
-        config_file: Union[str, None] = DEFAULT_CONFIG_FILE
-    ):
+    def __init__(self, config_file: Optional[str] = DEFAULT_CONFIG_FILE):
         self.grade_report: List[List[str]] = []
         
         # Initialize Test Cases Configuration
@@ -41,7 +39,6 @@ class Grader:
             self.__read_config(config_file)
 
     def __read_config(self, config_file: str) -> None:
-        
         config = toml.load(config_file)
 
         # Global Test Cases Configuration
@@ -83,17 +80,12 @@ class Grader:
                 )
             )
 
-    def setcase(
-        self,
-        match_case: Union[str, List[str]] = ALL_MATCH_CASE
-    ) -> Callable:
-        
+    def setcase(self, match_case: Union[str, List[str]] = ALL_MATCH_CASE) -> Callable:
         def wrapper(func: Callable) -> None:
             match_case_list = match_case if isinstance(match_case, list) else [match_case]
             for _case in self.case_list:
                 if any(fnmatch.fnmatchcase(_case.name, name) for name in match_case_list):
                     _case.verify_func = func
-
         return wrapper
     
     def run(
@@ -128,7 +120,9 @@ class Grader:
 
             # Build Student File
             logging.info(f"Building {student_id}: {not disable_build}")
-            if disable_build: continue
+            if disable_build: 
+                continue
+            
             build(folder=student_dir, copy_file=self.support_files)
             
             # Execute and Verify Student File
@@ -140,15 +134,14 @@ class Grader:
                     exception_signal = _case.execute(student_dir=student_dir)
                 
                 logging.info(f"Verifying: {student_id}: {not disable_verify}, case: {_case.name}, exception: {exception_signal}")
-                if exception_signal == ExecuteException.NoFile: break
-                elif disable_verify or exception_signal != None: continue
+                if exception_signal == ExecuteException.NoFile: 
+                    break
+                elif disable_verify or exception_signal != None: 
+                    continue
                 
                 _case.verify()
             
             logging.info(f"Grading Complete: {student_id}, grade report: {self.grade_report[-1]}")
 
         logging.info(f"Generating Grade Report: {save_path}")
-        grade(
-            grade_report=self.grade_report,
-            save_path=save_path
-        )
+        grade(grade_report=self.grade_report, save_path=save_path)

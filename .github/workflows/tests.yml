@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry
+          pip install poetry==1.8.2
           poetry install --with dev
 
       - name: Run Examples Test
@@ -61,7 +61,7 @@ jobs:
           apt-get update
           apt-get install -y python3-pip
           python3 -m pip install --upgrade pip --break-system-packages
-          pip install poetry --break-system-packages
+          pip install poetry==1.8.2 --break-system-packages
           poetry install --with dev
 
       - name: Run Examples Test

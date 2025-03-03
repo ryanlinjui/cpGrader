@@ -17,7 +17,6 @@ def extract(src_folder:str, dest_folder:str) -> list:
     target_key = ["*akefile", "hw0*0*.c", "README*", "bonus*", "*.pdf"]
     filter_dir = ["__MACOSX", ".vscode"]
     exclude_folder_name = ["NTU", "NTUST"]
-
     student_list = []
 
     root = os.getcwd()
@@ -166,11 +165,7 @@ def execute(folder:str, command:str, stdin_list:list=[]) -> str:
     
     return output
 
-def grade(
-    grade_report: List[Tuple[str, List[Union[int, str]], List[str]]],
-    save_path: str
-) -> None:
-
+def grade(grade_report: List[Tuple[str, List[Union[int, str]], List[str]]], save_path: str) -> None:
     for student in grade_report:
         student[1] = sum(student[1])
         student[2] = "\n".join(student[2])
